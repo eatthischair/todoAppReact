@@ -64,10 +64,13 @@ const AddTaskModal = ({taskDetailsOpen, setTaskDetailsOpen, taskArr, setTaskArr,
       powerLevel: (priorityLevel || 0 ) + (complexityLevel || 0),
       tags: tags || task?.tags,
       checklist: checklist || task?.checklist,
-      checklistItemsCompletedIndices: checklist.slice().fill(false, 0),
+      // checklistItemsCompletedIndices: checklist?.slice().fill(false, 0) || task?.checklist.slice().fill(false, 0),
       done: false || task?.done,
     }
-    let newTaskArr = taskArr.slice()
+    taskObj.checklistItemsCompletedIndices = taskObj.checklist ? taskObj.checklist.slice().fill(false, 0) : [];
+
+
+    let newTaskArr = taskArr?.slice()
     if (taskIndex !== -1) newTaskArr.splice(taskIndex, 1);
 
     setUnfilteredTaskArr([...newTaskArr, taskObj])
