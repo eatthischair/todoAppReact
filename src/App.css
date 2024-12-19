@@ -109,7 +109,7 @@ body {
 
 .taskModal {
   overflow: scroll;
-  border: rgb(73, 37, 182) solid 2px;
+  /* border: rgb(73, 37, 182) solid 2px; */
     position: fixed;
     top: 0;
     left: 0;
@@ -172,7 +172,7 @@ body {
 }
 
 .taskDetails {
-  border: rgb(73, 37, 182) solid 2px;
+  /* border: rgb(73, 37, 182) solid 2px; */
   position: fixed;
   top: 0;
   left: 0;
@@ -189,7 +189,7 @@ body {
 .taskDetailsBtns {
   width: 40%;
   display: flex;
-  border: blue solid 2px;
+  /* border: blue solid 2px; */
   margin: auto;
 }
 
@@ -289,3 +289,18 @@ body {
   background-color: aquamarine;
 }
 
+.buttonRow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 10px;
+  gap: 20px;
+}
+
+.buttonRowbtn {
+  padding: 10px 20px;            /* Add padding inside buttons */
+  font-size: 16px;               /* Adjust button font size */
+  cursor: pointer;
+
+}

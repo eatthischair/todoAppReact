@@ -3,6 +3,7 @@ import LevelSelector from './CardComponents/LevelSelector';
 import DateandTimeInput from './CardComponents/DateandTimeInput';
 import AddChecklist from './CardComponents/AddChecklist';
 import AddTags from './CardComponents/AddTags';
+import UndoIcon from '@mui/icons-material/Undo';
 
 const AddTaskModal = ({taskDetailsOpen, setTaskDetailsOpen, taskArr, setTaskArr, task, editTaskModalIsOpen, setEditTaskModalIsOpen, setDeepCopyTask, editTaskModalFromDetails, unfilteredTaskArr, setUnfilteredTaskArr}) => {
 
@@ -80,6 +81,11 @@ const AddTaskModal = ({taskDetailsOpen, setTaskDetailsOpen, taskArr, setTaskArr,
     setEditTaskModalIsOpen(false);
   }
 
+  const goBack = () => {
+    setEditTaskModalIsOpen(false);
+  }
+
+
   if ((editTaskModalFromDetails && task) || (!taskDetailsOpen && !task)) {
   return (
     <div class='taskModal'>
@@ -104,7 +110,9 @@ const AddTaskModal = ({taskDetailsOpen, setTaskDetailsOpen, taskArr, setTaskArr,
 
       <AddTags tags={tags} setTags={setTags} tagsPlaceholder={task?.tags}></AddTags>
 
-      <button onClick={() => saveTask()}>Save Task</button>
+      <div class='buttonRow'></div>
+      <button class='buttonRowbtn' onClick={() => saveTask()}>Save Task</button>
+      <button onClick={() => goBack()}><UndoIcon></UndoIcon></button>
       </div>
     </div>
   )
