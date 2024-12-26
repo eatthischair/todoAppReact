@@ -1,28 +1,16 @@
-import {
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  Checkbox,
-  ListItemText,
-} from "@mui/material";
-import { styled } from "@mui/material/styles";
-import { useState, useEffect } from "react";
+import { FormControl, InputLabel, Select, MenuItem, Checkbox, ListItemText } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import { useState, useEffect } from 'react';
+import { useTaskContext } from '../context/TaskContext';
 
-const Filter = ({
-  taskArr,
-  setTaskArr,
-  filterIsOn,
-  setFilterIsOn,
-  unfilteredTaskArr,
-  setUnfilteredTaskArr,
-}) => {
+const Filter = ({ filterIsOn, setFilterIsOn }) => {
+  const { taskArr, setTaskArr, unfilteredTaskArr, setUnfilteredTaskArr } = useTaskContext();
+
   const [allTags, setAllTags] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
   const [listIsOpen, setListIsOpen] = useState(true);
 
   useEffect(() => {
-    // console.log('selected tags', selectedTags);
     setTaskArr(() => {
       if (selectedTags.length === 0) {
         return unfilteredTaskArr;
@@ -41,7 +29,6 @@ const Filter = ({
         tagsArr.push(task.tags);
       });
       tagsArr.flat();
-      // console.log('find all tags', tagsArr.flat())
       return tagsArr.flat();
     };
     setAllTags(findAllTags());
@@ -59,7 +46,6 @@ const Filter = ({
     const filteredTasks = unfilteredTaskArr.filter((task) =>
       task.tags.some((tag) => selectedTags.includes(tag)),
     );
-    // console.log('filtered', filteredTasks);
     return filteredTasks;
   };
 
@@ -71,10 +57,10 @@ const Filter = ({
   };
 
   const CustomFormControl = styled(FormControl)(({ theme }) => ({
-    "& .MuiOutlinedInput-root": {
-      borderRadius: "20px",
-      "& fieldset": {
-        borderRadius: "20px",
+    '& .MuiOutlinedInput-root': {
+      borderRadius: '20px',
+      '& fieldset': {
+        borderRadius: '20px',
       },
     },
   }));
@@ -82,12 +68,7 @@ const Filter = ({
   return (
     <CustomFormControl fullWidth>
       <InputLabel id="demo-simple-select-label2">Filter</InputLabel>
-      <Select
-        labelId="demo-simple-select-label2"
-        id="demo-simple-select2"
-        multiple
-        value={allTags}
-      >
+      <Select labelId="demo-simple-select-label2" id="demo-simple-select2" multiple value={allTags}>
         {allTags
           ? allTags.map((tag) => {
               return (
@@ -101,7 +82,7 @@ const Filter = ({
                 </MenuItem>
               );
             })
-          : ""}
+          : ''}
       </Select>
     </CustomFormControl>
   );

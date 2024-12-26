@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
-import LevelSelector from "../Components/LevelSelector";
-import DateandTimeInput from "../Components/DateandTimeInput";
-import AddChecklist from "../Components/AddChecklist";
-import AddTags from "../Components/AddTags";
-import UndoIcon from "@mui/icons-material/Undo";
+import { useState, useEffect } from 'react';
+import LevelSelector from '../Components/LevelSelector';
+import DateandTimeInput from '../Components/DateandTimeInput';
+import AddChecklist from '../Components/AddChecklist';
+import AddTags from '../Components/AddTags';
+import UndoIcon from '@mui/icons-material/Undo';
 
 const AddTaskModal = ({
   taskDetailsOpen,
@@ -15,20 +15,18 @@ const AddTaskModal = ({
   setEditTaskModalIsOpen,
   setDeepCopyTask,
   editTaskModalFromDetails,
-  unfilteredTaskArr,
-  setUnfilteredTaskArr,
+  // unfilteredTaskArr,
+  // setUnfilteredTaskArr,
 }) => {
-  const [taskObj, setTaskObj] = useState({});
+  const [taskObj, setTaskObj, unfilteredTaskArr, setUnfilteredTaskArr] = useState({});
   const [taskInputVal, setTaskInputVal] = useState(task?.taskName);
-
   const [priorityLevel, setPriorityLevel] = useState(0);
   const [complexityLevel, setComplexityLevel] = useState(0);
-  const [date, setDate] = useState("");
-  const [time, setTime] = useState("");
+  const [date, setDate] = useState('');
+  const [time, setTime] = useState('');
   const [checklist, setChecklist] = useState([]);
-  const [currentItem, setCurrentItem] = useState("");
+  const [currentItem, setCurrentItem] = useState('');
   const [tags, setTags] = useState([]);
-
   const [taskIndex, setTaskIndex] = useState(null);
 
   useEffect(() => {
@@ -46,9 +44,7 @@ const AddTaskModal = ({
   }, [task]);
 
   const findTaskIndex = () => {
-    return taskArr.findIndex(
-      (item) => JSON.stringify(item) === JSON.stringify(task),
-    );
+    return taskArr.findIndex((item) => JSON.stringify(item) === JSON.stringify(task));
   };
   const updateTaskName = (task) => {
     setTaskInputVal(task);
@@ -59,6 +55,10 @@ const AddTaskModal = ({
   };
   const updateComplexityLevel = (num) => {
     setComplexityLevel(num);
+  };
+
+  const goBack = () => {
+    setEditTaskModalIsOpen(false);
   };
 
   const saveTask = () => {
@@ -84,10 +84,6 @@ const AddTaskModal = ({
     setTaskArr([...newTaskArr, taskObj]);
     setTaskDetailsOpen(false);
     setTaskObj(taskObj);
-    setEditTaskModalIsOpen(false);
-  };
-
-  const goBack = () => {
     setEditTaskModalIsOpen(false);
   };
 
@@ -139,11 +135,7 @@ const AddTaskModal = ({
             checklistPlaceholder={task?.checklist || checklist}
           ></AddChecklist>
 
-          <AddTags
-            tags={tags}
-            setTags={setTags}
-            tagsPlaceholder={task?.tags}
-          ></AddTags>
+          <AddTags tags={tags} setTags={setTags} tagsPlaceholder={task?.tags}></AddTags>
 
           <div class="buttonRow"></div>
           <button class="buttonRowbtn" onClick={() => saveTask()}>

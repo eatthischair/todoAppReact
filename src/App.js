@@ -1,27 +1,28 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from 'react';
 
-import "../App.css";
-import Search from "../Components/Search.jsx";
-import TaskDisplay from "../Components/TaskDisplay.jsx";
-import Sort from "../Components/Sort.jsx";
-import Filter from "../Components/Filter.jsx";
-import AddTaskModal from "./AddTaskModal.jsx";
-import PowerMode from "../Components/PowerMode.jsx";
+import './App.css';
+import Search from './Components/Search.jsx';
+import TaskDisplay from './Components/TaskDisplay.jsx';
+import Sort from './Components/Sort.jsx';
+import Filter from './Components/Filter.jsx';
+import AddTaskModal from './Pages/AddTaskModal.jsx';
+import PowerMode from './Components/PowerMode.jsx';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+
+import { useTaskContext } from './context/TaskContext.jsx';
 
 function App() {
-  const [taskArr, setTaskArr] = useState([]);
-  const [unfilteredTaskArr, setUnfilteredTaskArr] = useState([]);
+  const { taskArr, setTaskArr, unfilteredTaskArr, setUnfilteredTaskArr } = useTaskContext();
+
   //for display
   const [taskDetailsOpen, setTaskDetailsOpen] = useState(false);
   //for editing
   const [editTaskModalIsOpen, setEditTaskModalIsOpen] = useState(false);
   const hasLoaded = useRef(false);
-  //for filter
-  const [filterIsOn, setFilterIsOn] = useState(false);
 
   useEffect(() => {
     if (!hasLoaded.current) {
-      const savedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
+      const savedTasks = JSON.parse(localStorage.getItem('tasks')) || [];
       setTaskArr(savedTasks);
       setUnfilteredTaskArr(savedTasks);
       hasLoaded.current = true;
@@ -30,21 +31,20 @@ function App() {
 
   useEffect(() => {
     if (hasLoaded.current) {
-      if (taskArr) localStorage.setItem("tasks", JSON.stringify(taskArr));
+      if (taskArr) localStorage.setItem('tasks', JSON.stringify(taskArr));
     }
   }, [taskArr]);
 
   useEffect(() => {
-    let biggerTaskArr =
-      unfilteredTaskArr.length > taskArr.length ? unfilteredTaskArr : taskArr;
-    localStorage.setItem("tasks", JSON.stringify(biggerTaskArr));
+    let biggerTaskArr = unfilteredTaskArr.length > taskArr.length ? unfilteredTaskArr : taskArr;
+    localStorage.setItem('tasks', JSON.stringify(biggerTaskArr));
   }, [unfilteredTaskArr, taskArr]);
 
   return (
     <div className="App">
       <Search
-        taskArr={taskArr}
-        setTaskArr={setTaskArr}
+        // taskArr={taskArr}
+        // setTaskArr={setTaskArr}
         unfilteredTaskArr={unfilteredTaskArr}
         setUnfilteredTaskArr={setUnfilteredTaskArr}
       ></Search>
@@ -83,15 +83,15 @@ function App() {
           <AddTaskModal
             editTaskModalIsOpen={editTaskModalIsOpen}
             setEditTaskModalIsOpen={setEditTaskModalIsOpen}
-            taskArr={taskArr}
-            setTaskArr={setTaskArr}
             taskDetailsOpen={taskDetailsOpen}
             setTaskDetailsOpen={setTaskDetailsOpen}
-            unfilteredTaskArr={unfilteredTaskArr}
-            setUnfilteredTaskArr={setUnfilteredTaskArr}
+            // taskArr={taskArr}
+            // setTaskArr={setTaskArr}
+            // unfilteredTaskArr={unfilteredTaskArr}
+            // setUnfilteredTaskArr={setUnfilteredTaskArr}
           ></AddTaskModal>
         ) : (
-          ""
+          ''
         )}
       </div>
     </div>

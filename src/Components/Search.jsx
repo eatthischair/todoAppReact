@@ -1,11 +1,10 @@
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
+import { useTaskContext } from "../context/TaskContext";
 
-const Search = ({
-  taskArr,
-  setTaskArr,
-  unfilteredTaskArr,
-  setUnfilteredTaskArr,
-}) => {
+const Search = () => {
+  const { taskArr, setTaskArr, unfilteredTaskArr, setUnfilteredTaskArr } =
+    useTaskContext();
+
   const handleSearch = (input) => {
     let newTaskArr = taskArr.slice().filter((task) => {
       return task.taskName.includes(input);
