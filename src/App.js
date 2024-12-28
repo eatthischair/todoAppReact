@@ -12,6 +12,11 @@ function App() {
   const hasLoaded = useRef(false);
 
   useEffect(() => {
+    console.log('TaskArr updated:', taskArr);
+    console.log('UnfilteredTaskArr updated:', unfilteredTaskArr);
+  }, [taskArr, unfilteredTaskArr]);
+
+  useEffect(() => {
     if (!hasLoaded.current) {
       const savedTasks = JSON.parse(localStorage.getItem('tasks')) || [];
       setTaskArr(savedTasks);
@@ -33,15 +38,11 @@ function App() {
 
   return (
     <div className="App">
-      <Router>
-        <div>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/addTask" element={<AddTaskModal />} />
-            <Route path="/taskDetails" element={<TaskDetails />} />
-          </Routes>
-        </div>
-      </Router>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/addTask" element={<AddTaskModal />} />
+        <Route path="/taskDetails" element={<TaskDetails />} />
+      </Routes>
     </div>
   );
 }

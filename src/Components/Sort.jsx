@@ -1,16 +1,15 @@
-import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
-import { styled } from "@mui/material/styles";
-import { useTaskContext } from "../context/TaskContext";
+import { FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import { useTaskContext } from '../context/TaskContext';
 
 const Sort = () => {
-  const { taskArr, setTaskArr, unfilteredTaskArr, setUnfilteredTaskArr } =
-    useTaskContext();
+  const { taskArr, setTaskArr, unfilteredTaskArr, setUnfilteredTaskArr } = useTaskContext();
 
   const CustomFormControl = styled(FormControl)(({ theme }) => ({
-    "& .MuiOutlinedInput-root": {
-      borderRadius: "20px",
-      "& fieldset": {
-        borderRadius: "20px",
+    '& .MuiOutlinedInput-root': {
+      borderRadius: '20px',
+      '& fieldset': {
+        borderRadius: '20px',
       },
     },
   }));
@@ -79,24 +78,12 @@ const Sort = () => {
         <InputLabel id="demo-simple-select-label">Sort</InputLabel>
         <Select labelId="demo-simple-select-label" id="demo-simple-select">
           <MenuItem>Default</MenuItem>
-          <MenuItem onClick={() => sortByAscendingDate()}>
-            Ascending Date
-          </MenuItem>
-          <MenuItem onClick={() => sortByDescendingDate()}>
-            Descending Date
-          </MenuItem>
-          <MenuItem onClick={() => sortByAscendingComplexity()}>
-            Ascending Complexity
-          </MenuItem>
-          <MenuItem onClick={() => sortByDescendingComplexity()}>
-            Descending Complexity
-          </MenuItem>
-          <MenuItem onClick={() => sortByAscendingPriority()}>
-            Ascending Priority
-          </MenuItem>
-          <MenuItem onClick={() => sortByDescendingPriority()}>
-            Descending Priority
-          </MenuItem>
+          <MenuItem onClick={() => sortByAscendingDate()}>Ascending Date</MenuItem>
+          <MenuItem onClick={() => sortByDescendingDate()}>Descending Date</MenuItem>
+          <MenuItem onClick={() => sortByAscendingComplexity()}>Ascending Complexity</MenuItem>
+          <MenuItem onClick={() => sortByDescendingComplexity()}>Descending Complexity</MenuItem>
+          <MenuItem onClick={() => sortByAscendingPriority()}>Ascending Priority</MenuItem>
+          <MenuItem onClick={() => sortByDescendingPriority()}>Descending Priority</MenuItem>
         </Select>
       </CustomFormControl>
     </div>

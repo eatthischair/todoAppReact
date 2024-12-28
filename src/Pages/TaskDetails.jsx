@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import UndoIcon from '@mui/icons-material/Undo';
 import RepeatIcon from '@mui/icons-material/Repeat';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -10,14 +10,26 @@ import CheckIcon from '@mui/icons-material/Check';
 import LinearProgress from '@mui/material/LinearProgress';
 
 import { useTaskContext } from '../context/TaskContext';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 const TaskDetails = () => {
-  const { taskArr, setTaskArr, unfilteredTaskArr, setUnfilteredTaskArr, taskToOpen, taskIndex } =
+  const { taskArr, setTaskArr, unfilteredTaskArr, setUnfilteredTaskArr, taskToOpen } =
     useTaskContext();
   const navigate = useNavigate();
 
-  //to avoid renaming everything lmao
+  let [searchParams] = useSearchParams();
+
+  const [taskIndex, setTaskIndex] = useState(null);
+
+  useEffect(() => {
+    setTaskIndex(() => {
+      for (const [key] of searchParams.entries()) {
+        return key;
+      }
+    });
+  }, [setTaskIndex, searchParams]);
+
+  //to avoid renaming everything and causing bugs lmao
   const [task, setTask] = useState(taskToOpen);
 
   const deleteTask = () => {
@@ -31,9 +43,20 @@ const TaskDetails = () => {
   const [checklistClickedPercentage, setChecklistClickedPercentage] = useState(0);
 
   function updateNestedData(newArr) {
-    setTaskArr((prevState) =>
+    setTaskArr((prevState) => {
+      const newState = prevState.map((item, index) => {
+        if (index === taskIndex * 1) {
+          return { ...item, checklistItemsCompletedIndices: newArr };
+        } else {
+          return item;
+        }
+      });
+      return newState;
+    });
+
+    setUnfilteredTaskArr((prevState) =>
       prevState.map((item, index) =>
-        index === taskIndex ? { ...item, checklistItemsCompletedIndices: newArr } : item,
+        index === taskIndex * 1 ? { ...item, checklistItemsCompletedIndices: newArr } : item,
       ),
     );
   }
@@ -41,14 +64,14 @@ const TaskDetails = () => {
   const handleChecklistClicked = (index) => {
     let sliced = checklistClicked.slice();
     sliced[index] = !sliced[index];
-    updateNestedData(sliced);
-    setChecklistClicked(sliced);
     let val = 0;
     for (let i = 0; i < sliced.length; i++) {
       if (sliced[i] === true) {
         val += Math.ceil(100 / sliced.length);
       }
     }
+    updateNestedData(sliced);
+    setChecklistClicked(sliced);
     setChecklistClickedPercentage(val);
   };
 
@@ -72,6 +95,7 @@ const TaskDetails = () => {
           Checklist for Subtasks
           {task?.checklist?.map((item, index) => (
             <div
+              key={index}
               onClick={() => handleChecklistClicked(index)}
               class="checklistTask"
               style={{
@@ -93,7 +117,7 @@ const TaskDetails = () => {
       </div>
 
       <div class="taskDetailsBtns">
-        <button onClick={() => navigate('/')}>
+        <button onClick={() => navigate(`/`)}>
           <UndoIcon></UndoIcon>
         </button>
         <button>
@@ -102,7 +126,7 @@ const TaskDetails = () => {
         <button onClick={() => deleteTask()}>
           <DeleteIcon></DeleteIcon>
         </button>
-        <button onClick={() => navigate('/addTask')}>
+        <button onClick={() => navigate(`/addTask?${taskIndex}`)}>
           <ModeEditIcon></ModeEditIcon>
         </button>
       </div>

@@ -7,7 +7,6 @@ const TaskContext = createContext();
 export function TaskProvider({ children }) {
   const [taskArr, setTaskArr] = useState([]);
   const [unfilteredTaskArr, setUnfilteredTaskArr] = useState([]);
-
   const [taskToOpen, setTaskToOpen] = useState({});
   const [taskIndex, setTaskIndex] = useState(false);
 

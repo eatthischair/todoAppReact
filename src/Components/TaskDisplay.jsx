@@ -1,33 +1,22 @@
-import { useState } from 'react';
-import TaskDetails from '../Pages/TaskDetails';
 import DoneIcon from '@mui/icons-material/Done';
-import DeleteIcon from '@mui/icons-material/Delete';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import OpenWithIcon from '@mui/icons-material/OpenWith';
 import CircularProgress from '@mui/material/CircularProgress';
-import { useTaskContext } from '../context/TaskContext';
 
+import { useTaskContext } from '../context/TaskContext';
 import { useNavigate } from 'react-router-dom';
 
 const TaskDisplay = () => {
-  const {
-    taskArr,
-    setTaskArr,
-    unfilteredTaskArr,
-    setUnfilteredTaskArr,
-    taskToOpen,
-    setTaskToOpen,
-    taskIndex,
-    setTaskIndex,
-  } = useTaskContext();
+  const { taskArr, setTaskArr, setUnfilteredTaskArr, setTaskToOpen, setTaskIndex } =
+    useTaskContext();
 
   const navigate = useNavigate();
 
   const handleTaskDetails = (task, index) => {
     setTaskIndex(index);
     setTaskToOpen(task);
-    navigate('/taskDetails');
+    navigate(`/taskDetails?${index}`);
   };
 
   const handleTaskComplete = (task, index) => {
@@ -38,6 +27,7 @@ const TaskDisplay = () => {
       return item;
     });
     setTaskArr(updatedTasks);
+    setUnfilteredTaskArr(updatedTasks);
   };
 
   const makeTagBubbles = (tags) => {
@@ -50,7 +40,6 @@ const TaskDisplay = () => {
     const today = new Date();
     const taskDate = new Date(dateString);
     const differenceInDays = (taskDate - today) / (24 * 60 * 60 * 1000);
-
     if (differenceInDays <= 1) {
       return 'red';
     } else if (differenceInDays <= 3) {
@@ -77,7 +66,7 @@ const TaskDisplay = () => {
         onClick={(e) => {
           handleTaskDetails(task, index);
         }}
-        class="task"
+        className="task"
         style={{
           backgroundColor: task.done ? 'green' : 'rgb(255, 255, 255)',
         }}
@@ -119,7 +108,6 @@ const TaskDisplay = () => {
   return (
     <div class="taskList">
       <div>{mapTasks()}</div>
-      {/* {taskDetailsOpen ? <TaskDetails task={taskToOpen} taskIndex={taskIndex}></TaskDetails> : ''} */}
     </div>
   );
 };

@@ -4,11 +4,10 @@ import { useState, useEffect } from 'react';
 import { useTaskContext } from '../context/TaskContext';
 
 const Filter = ({ filterIsOn, setFilterIsOn }) => {
-  const { taskArr, setTaskArr, unfilteredTaskArr, setUnfilteredTaskArr } = useTaskContext();
+  const { taskArr, setTaskArr, unfilteredTaskArr } = useTaskContext();
 
   const [allTags, setAllTags] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
-  const [listIsOpen, setListIsOpen] = useState(true);
 
   useEffect(() => {
     setTaskArr(() => {
@@ -53,7 +52,6 @@ const Filter = ({ filterIsOn, setFilterIsOn }) => {
     let newSelectedTags = addOrRemoveTagFromSelected(tag);
     filterTasksByTag(tag, newSelectedTags);
     setSelectedTags(newSelectedTags);
-    setListIsOpen(true);
   };
 
   const CustomFormControl = styled(FormControl)(({ theme }) => ({
@@ -70,7 +68,7 @@ const Filter = ({ filterIsOn, setFilterIsOn }) => {
       <InputLabel id="demo-simple-select-label2">Filter</InputLabel>
       <Select labelId="demo-simple-select-label2" id="demo-simple-select2" multiple value={allTags}>
         {allTags
-          ? allTags.map((tag) => {
+          ? allTags.map((tag, index) => {
               return (
                 <MenuItem>
                   {tag}

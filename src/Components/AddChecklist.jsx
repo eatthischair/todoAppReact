@@ -1,7 +1,7 @@
-import { useCallback } from "react";
+import { useCallback } from 'react';
 
-import AddIcon from "@mui/icons-material/Add";
-import DeleteIcon from "@mui/icons-material/Delete";
+import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const AddChecklist = ({
   checklist,
@@ -22,7 +22,7 @@ const AddChecklist = ({
   const updateChecklist = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    setCurrentItem("");
+    setCurrentItem('');
     setChecklist((prevChecklist) => {
       if (checklist) {
         return [...checklist, currentItem];
@@ -41,7 +41,7 @@ const AddChecklist = ({
   return (
     <form>
       <label for="checklist">Add Checklist</label>
-      <div class="checklistInput">
+      <div className="checklistInput">
         <input
           onChange={(e) => handleInputChange(e)}
           type="text"
@@ -54,9 +54,9 @@ const AddChecklist = ({
       </div>
 
       <div>
-        {checklist?.map((item) => {
+        {checklist?.map((item, index) => {
           return (
-            <div>
+            <div key={index}>
               {item}
               <button onClick={(e) => deleteItem(e, item)}>
                 <DeleteIcon></DeleteIcon>

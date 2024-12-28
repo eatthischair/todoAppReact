@@ -6,54 +6,38 @@ import AddTags from '../Components/AddTags';
 import UndoIcon from '@mui/icons-material/Undo';
 
 import { useTaskContext } from '../context/TaskContext';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 const AddTaskModal = () => {
-  const {
-    taskArr,
-    setTaskArr,
-    unfilteredTaskArr,
-    setUnfilteredTaskArr,
-    taskToOpen,
-    setTaskToOpen,
-    taskIndex,
-    setTaskIndex,
-  } = useTaskContext();
+  const { taskArr, setTaskArr, setUnfilteredTaskArr, taskToOpen, setTaskToOpen } = useTaskContext();
   const navigate = useNavigate();
 
+  let [searchParams] = useSearchParams();
+  const [taskIndex, setTaskIndex] = useState(null);
   const [task, setTask] = useState(taskToOpen);
 
-  const [taskObj, setTaskObj] = useState({});
+  useEffect(() => {
+    let taskIndexValue = -1;
+    for (const [key] of searchParams.entries()) {
+      if (key !== 'navFromHome') {
+        taskIndexValue = key;
+      }
+    }
+    setTaskIndex(taskIndexValue);
+  }, [searchParams]);
+
   const [taskInputVal, setTaskInputVal] = useState(task?.taskName);
-  const [priorityLevel, setPriorityLevel] = useState(0);
-  const [complexityLevel, setComplexityLevel] = useState(0);
-  const [date, setDate] = useState('');
-  const [time, setTime] = useState('');
-  const [checklist, setChecklist] = useState([]);
+  const [priorityLevel, setPriorityLevel] = useState(task?.priorityLevel);
+  const [complexityLevel, setComplexityLevel] = useState(task?.complexityLevel);
+  const [date, setDate] = useState(task?.date);
+  const [time, setTime] = useState(task?.time);
+  const [checklist, setChecklist] = useState(task?.checklist);
   const [currentItem, setCurrentItem] = useState('');
-  const [tags, setTags] = useState([]);
+  const [tags, setTags] = useState(task?.tags);
 
-  useEffect(() => {
-    setTaskIndex(findTaskIndex());
-  }, [task]);
-
-  useEffect(() => {
-    setPriorityLevel(task?.priorityLevel);
-    setComplexityLevel(task?.complexityLevel);
-    setChecklist(task?.checklist);
-  }, [task]);
-
-  useEffect(() => {
-    setTaskInputVal(task?.taskName);
-  }, [task]);
-
-  const findTaskIndex = () => {
-    return taskArr.findIndex((item) => JSON.stringify(item) === JSON.stringify(task));
-  };
   const updateTaskName = (task) => {
     setTaskInputVal(task);
   };
-
   const updatePriorityLevel = (num) => {
     setPriorityLevel(num);
   };
@@ -70,8 +54,8 @@ const AddTaskModal = () => {
       taskName: taskInputVal,
       date: date || task?.date,
       time: time || task?.time,
-      priorityLevel: priorityLevel,
-      complexityLevel: complexityLevel,
+      priorityLevel: priorityLevel + 1,
+      complexityLevel: complexityLevel + 1,
       powerLevel: (priorityLevel || 0) + (complexityLevel || 0),
       tags: tags || task?.tags,
       checklist: checklist || task?.checklist,
@@ -86,7 +70,6 @@ const AddTaskModal = () => {
 
     setUnfilteredTaskArr([...newTaskArr, taskObj]);
     setTaskArr([...newTaskArr, taskObj]);
-    setTaskObj(taskObj);
     navigate('/');
   };
 
@@ -107,7 +90,7 @@ const AddTaskModal = () => {
           <LevelSelector
             onClick={updatePriorityLevel}
             priorityLevel={priorityLevel}
-            taskPriority={task?.priorityLevel}
+            forPriority
           ></LevelSelector>
         </div>
 
@@ -116,7 +99,7 @@ const AddTaskModal = () => {
           <LevelSelector
             onClick={updateComplexityLevel}
             complexityLevel={complexityLevel}
-            taskComplexity={task?.complexityLevel}
+            forComplexity
           ></LevelSelector>
         </div>
 
@@ -125,8 +108,8 @@ const AddTaskModal = () => {
           setDate={setDate}
           time={time}
           setTime={setTime}
-          datePlaceholder={task?.date}
-          timePlaceholder={task?.time}
+          datePlaceholder={date}
+          timePlaceholder={time}
         ></DateandTimeInput>
 
         <AddChecklist
@@ -134,10 +117,10 @@ const AddTaskModal = () => {
           setChecklist={setChecklist}
           currentItem={currentItem}
           setCurrentItem={setCurrentItem}
-          checklistPlaceholder={task?.checklist || checklist}
+          checklistPlaceholder={checklist}
         ></AddChecklist>
 
-        <AddTags tags={tags} setTags={setTags} tagsPlaceholder={task?.tags}></AddTags>
+        <AddTags tags={tags} setTags={setTags} tagsPlaceholder={tags}></AddTags>
 
         <div class="buttonRow"></div>
         <button class="buttonRowbtn" onClick={() => saveTask()}>

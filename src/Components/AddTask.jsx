@@ -1,28 +1,18 @@
-import AddTaskModal from "../Pages/AddTaskModal";
-const AddTask = ({
-  taskArr,
-  setTaskArr,
-  editTaskModalIsOpen,
-  setEditTaskModalIsOpen,
-  taskModalOpen,
-  setTaskModalOpen,
-}) => {
+import { useNavigate } from 'react-router-dom';
+import { useTaskContext } from '../context/TaskContext';
+
+const AddTask = () => {
+  const navigate = useNavigate();
+  const { setTaskToOpen } = useTaskContext();
+
+  const resetFormThenNav = () => {
+    setTaskToOpen(null);
+    navigate('/addTask?navFromHome');
+  };
+
   return (
     <div class="addTask">
-      <button onClick={() => setEditTaskModalIsOpen(true)}>+ Add Task</button>
-      {editTaskModalIsOpen ? (
-        <AddTaskModal
-          editTaskModalIsOpen={editTaskModalIsOpen}
-          setEditTaskModalIsOpen={setEditTaskModalIsOpen}
-          taskArr={taskArr}
-          setTaskArr={setTaskArr}
-          taskModalOpen={taskModalOpen}
-          setTaskModalOpen={setTaskModalOpen}
-          editTaskModalFromDetails={false}
-        ></AddTaskModal>
-      ) : (
-        ""
-      )}
+      <button onClick={() => resetFormThenNav()}>+ Add Task</button>
     </div>
   );
 };
