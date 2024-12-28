@@ -1,12 +1,9 @@
-import { useState } from "react";
+import { useState } from 'react';
 
-const PowerMode = ({
-  taskArr,
-  setTaskArr,
-  unfilteredTaskArr,
-  setUnfilteredTaskArr,
-}) => {
-  // console.log('unfiltered task arr', unfilteredTaskArr, 'aaa', [...unfilteredTaskArr].sort((a, b) => {return b.powerLevel - a.powerLevel}));
+import { useTaskContext } from '../context/TaskContext';
+
+const PowerMode = () => {
+  const { taskArr, setTaskArr, unfilteredTaskArr, setUnfilteredTaskArr } = useTaskContext();
 
   const [powerModeOn, setPowerModeOn] = useState(false);
 

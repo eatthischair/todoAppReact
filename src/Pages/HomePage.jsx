@@ -1,23 +1,28 @@
-import Search from "./Components/Search.jsx";
-import TaskDisplay from "./Components/TaskDisplay.jsx";
-import Sort from "./Components/Sort.jsx";
-import Filter from "./Components/Filter.jsx";
-import AddTaskModal from "./Pages/AddTaskModal.jsx";
-import PowerMode from "./Components/PowerMode.jsx";
+import Search from '../Components/Search';
+import TaskDisplay from '../Components/TaskDisplay.jsx';
+import Sort from '../Components/Sort.jsx';
+import Filter from '../Components/Filter.jsx';
+import AddTaskModal from './AddTaskModal.jsx';
+import PowerMode from '../Components/PowerMode.jsx';
 
-import { useTaskContext } from "./context/TaskContext.jsx";
+import { useNavigate } from 'react-router-dom';
 
 const HomePage = () => {
-  const { taskArr, setTaskArr } = useTaskContext();
+  const navigate = useNavigate();
 
   return (
     <div>
       <Search></Search>
-      <Sort></Sort>
-      <Filter></Filter>
+      <div className="btns">
+        <Sort></Sort>
+        <Filter></Filter>
+      </div>
       <PowerMode></PowerMode>
       <TaskDisplay></TaskDisplay>
-      <AddTaskModal></AddTaskModal>
+
+      <div class="addTask">
+        <button onClick={() => navigate('/addTask')}>+ Add Task</button>
+      </div>
     </div>
   );
 };

@@ -1,28 +1,33 @@
-import { useState } from "react";
-import TaskDetails from "../Pages/TaskDetails";
-import DoneIcon from "@mui/icons-material/Done";
-import DeleteIcon from "@mui/icons-material/Delete";
-import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
-import OpenWithIcon from "@mui/icons-material/OpenWith";
-import CircularProgress from "@mui/material/CircularProgress";
+import { useState } from 'react';
+import TaskDetails from '../Pages/TaskDetails';
+import DoneIcon from '@mui/icons-material/Done';
+import DeleteIcon from '@mui/icons-material/Delete';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import OpenWithIcon from '@mui/icons-material/OpenWith';
+import CircularProgress from '@mui/material/CircularProgress';
+import { useTaskContext } from '../context/TaskContext';
 
-const TaskDisplay = ({
-  taskArr,
-  setTaskArr,
-  taskDetailsOpen,
-  setTaskDetailsOpen,
-  editTaskModalIsOpen,
-  setEditTaskModalIsOpen,
-  unfilteredTaskArr,
-  setUnfilteredTaskArr,
-}) => {
-  const [taskToOpen, setTaskToOpen] = useState({});
-  const [taskIndex, setTaskIndex] = useState(false);
+import { useNavigate } from 'react-router-dom';
+
+const TaskDisplay = () => {
+  const {
+    taskArr,
+    setTaskArr,
+    unfilteredTaskArr,
+    setUnfilteredTaskArr,
+    taskToOpen,
+    setTaskToOpen,
+    taskIndex,
+    setTaskIndex,
+  } = useTaskContext();
+
+  const navigate = useNavigate();
+
   const handleTaskDetails = (task, index) => {
     setTaskIndex(index);
     setTaskToOpen(task);
-    setTaskDetailsOpen(true);
+    navigate('/taskDetails');
   };
 
   const handleTaskComplete = (task, index) => {
@@ -47,11 +52,11 @@ const TaskDisplay = ({
     const differenceInDays = (taskDate - today) / (24 * 60 * 60 * 1000);
 
     if (differenceInDays <= 1) {
-      return "red";
+      return 'red';
     } else if (differenceInDays <= 3) {
-      return "orange";
+      return 'orange';
     } else {
-      return "inherit";
+      return 'inherit';
     }
   };
 
@@ -74,7 +79,7 @@ const TaskDisplay = ({
         }}
         class="task"
         style={{
-          backgroundColor: task.done ? "green" : "rgb(255, 255, 255)",
+          backgroundColor: task.done ? 'green' : 'rgb(255, 255, 255)',
         }}
       >
         <h4>{task.taskName}</h4>
@@ -98,8 +103,7 @@ const TaskDisplay = ({
             color: howLongUntilDue(task.date),
           }}
         >
-          <CalendarMonthIcon></CalendarMonthIcon>Due Date: {task.date}{" "}
-          {task.time}
+          <CalendarMonthIcon></CalendarMonthIcon>Due Date: {task.date} {task.time}
         </div>
         <div>
           <ArrowUpwardIcon></ArrowUpwardIcon>Priority: {task.priorityLevel}
@@ -115,22 +119,7 @@ const TaskDisplay = ({
   return (
     <div class="taskList">
       <div>{mapTasks()}</div>
-      {taskDetailsOpen ? (
-        <TaskDetails
-          task={taskToOpen}
-          taskDetailsOpen={taskDetailsOpen}
-          setTaskDetailsOpen={setTaskDetailsOpen}
-          taskArr={taskArr}
-          setTaskArr={setTaskArr}
-          editTaskModalIsOpen={editTaskModalIsOpen}
-          setEditTaskModalIsOpen={setEditTaskModalIsOpen}
-          unfilteredTaskArr={unfilteredTaskArr}
-          setUnfilteredTaskArr={setUnfilteredTaskArr}
-          taskIndex={taskIndex}
-        ></TaskDetails>
-      ) : (
-        ""
-      )}
+      {/* {taskDetailsOpen ? <TaskDetails task={taskToOpen} taskIndex={taskIndex}></TaskDetails> : ''} */}
     </div>
   );
 };

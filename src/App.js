@@ -1,23 +1,14 @@
-import { useState, useEffect, useRef } from 'react';
-
+import { useEffect, useRef } from 'react';
 import './App.css';
-import Search from './Components/Search.jsx';
-import TaskDisplay from './Components/TaskDisplay.jsx';
-import Sort from './Components/Sort.jsx';
-import Filter from './Components/Filter.jsx';
 import AddTaskModal from './Pages/AddTaskModal.jsx';
-import PowerMode from './Components/PowerMode.jsx';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import HomePage from './Pages/HomePage.jsx';
+import TaskDetails from './Pages/TaskDetails.jsx';
 
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useTaskContext } from './context/TaskContext.jsx';
 
 function App() {
   const { taskArr, setTaskArr, unfilteredTaskArr, setUnfilteredTaskArr } = useTaskContext();
-
-  //for display
-  const [taskDetailsOpen, setTaskDetailsOpen] = useState(false);
-  //for editing
-  const [editTaskModalIsOpen, setEditTaskModalIsOpen] = useState(false);
   const hasLoaded = useRef(false);
 
   useEffect(() => {
@@ -42,58 +33,15 @@ function App() {
 
   return (
     <div className="App">
-      <Search
-        // taskArr={taskArr}
-        // setTaskArr={setTaskArr}
-        unfilteredTaskArr={unfilteredTaskArr}
-        setUnfilteredTaskArr={setUnfilteredTaskArr}
-      ></Search>
-
-      <div class="btns">
-        <Sort taskArr={taskArr} setTaskArr={setTaskArr}></Sort>
-        <Filter
-          taskArr={taskArr}
-          setTaskArr={setTaskArr}
-          unfilteredTaskArr={unfilteredTaskArr}
-          setUnfilteredTaskArr={setUnfilteredTaskArr}
-        ></Filter>
-      </div>
-
-      <PowerMode
-        taskArr={taskArr}
-        setTaskArr={setTaskArr}
-        unfilteredTaskArr={unfilteredTaskArr}
-        setUnfilteredTaskArr={setUnfilteredTaskArr}
-      ></PowerMode>
-
-      <TaskDisplay
-        taskArr={taskArr}
-        setTaskArr={setTaskArr}
-        taskDetailsOpen={taskDetailsOpen}
-        setTaskDetailsOpen={setTaskDetailsOpen}
-        editTaskModalIsOpen={editTaskModalIsOpen}
-        setEditTaskModalIsOpen={setEditTaskModalIsOpen}
-        unfilteredTaskArr={unfilteredTaskArr}
-        setUnfilteredTaskArr={setUnfilteredTaskArr}
-      ></TaskDisplay>
-
-      <div class="addTask">
-        <button onClick={() => setEditTaskModalIsOpen(true)}>+ Add Task</button>
-        {editTaskModalIsOpen ? (
-          <AddTaskModal
-            editTaskModalIsOpen={editTaskModalIsOpen}
-            setEditTaskModalIsOpen={setEditTaskModalIsOpen}
-            taskDetailsOpen={taskDetailsOpen}
-            setTaskDetailsOpen={setTaskDetailsOpen}
-            // taskArr={taskArr}
-            // setTaskArr={setTaskArr}
-            // unfilteredTaskArr={unfilteredTaskArr}
-            // setUnfilteredTaskArr={setUnfilteredTaskArr}
-          ></AddTaskModal>
-        ) : (
-          ''
-        )}
-      </div>
+      <Router>
+        <div>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/addTask" element={<AddTaskModal />} />
+            <Route path="/taskDetails" element={<TaskDetails />} />
+          </Routes>
+        </div>
+      </Router>
     </div>
   );
 }

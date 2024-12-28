@@ -1,63 +1,48 @@
-import { useState } from "react";
-import AddTaskModal from "./AddTaskModal";
-import UndoIcon from "@mui/icons-material/Undo";
-import RepeatIcon from "@mui/icons-material/Repeat";
-import DeleteIcon from "@mui/icons-material/Delete";
-import ModeEditIcon from "@mui/icons-material/ModeEdit";
-import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
-import OpenWithIcon from "@mui/icons-material/OpenWith";
-import CheckIcon from "@mui/icons-material/Check";
-import LinearProgress from "@mui/material/LinearProgress";
+import { useState } from 'react';
+import UndoIcon from '@mui/icons-material/Undo';
+import RepeatIcon from '@mui/icons-material/Repeat';
+import DeleteIcon from '@mui/icons-material/Delete';
+import ModeEditIcon from '@mui/icons-material/ModeEdit';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import OpenWithIcon from '@mui/icons-material/OpenWith';
+import CheckIcon from '@mui/icons-material/Check';
+import LinearProgress from '@mui/material/LinearProgress';
 
-const TaskDetails = ({
-  task,
-  taskDetailsOpen,
-  setTaskDetailsOpen,
-  taskArr,
-  setTaskArr,
-  editTaskModalIsOpen,
-  setEditTaskModalIsOpen,
-  unfilteredTaskArr,
-  setUnfilteredTaskArr,
-  taskIndex,
-}) => {
-  console.log("TASK INDEX", taskIndex, task);
-  //bypassing state mgmt issue bc this component is a modal, passing Task to another modal
-  const [deepCopyTask, setDeepCopyTask] = useState(
-    JSON.parse(JSON.stringify(task)),
-  );
+import { useTaskContext } from '../context/TaskContext';
+import { useNavigate } from 'react-router-dom';
+
+const TaskDetails = () => {
+  const { taskArr, setTaskArr, unfilteredTaskArr, setUnfilteredTaskArr, taskToOpen, taskIndex } =
+    useTaskContext();
+  const navigate = useNavigate();
+
+  //to avoid renaming everything lmao
+  const [task, setTask] = useState(taskToOpen);
 
   const deleteTask = () => {
-    setTaskArr(taskArr.filter((item) => item !== task));
-    setTaskDetailsOpen(false);
+    let filteredArr = [...taskArr].filter((item) => item !== task);
+    setTaskArr(filteredArr);
+    setUnfilteredTaskArr([...unfilteredTaskArr].filter((item) => item !== task));
+    navigate('/');
   };
 
-  const [checklistClicked, setChecklistClicked] = useState(
-    task.checklistItemsCompletedIndices,
-  );
-  const [checklistClickedPercentage, setChecklistClickedPercentage] =
-    useState(0);
+  const [checklistClicked, setChecklistClicked] = useState(task?.checklistItemsCompletedIndices);
+  const [checklistClickedPercentage, setChecklistClickedPercentage] = useState(0);
 
   function updateNestedData(newArr) {
-    console.log("UPDATENESTED DATA", newArr);
     setTaskArr((prevState) =>
       prevState.map((item, index) =>
-        index === taskIndex
-          ? { ...item, checklistItemsCompletedIndices: newArr }
-          : item,
+        index === taskIndex ? { ...item, checklistItemsCompletedIndices: newArr } : item,
       ),
     );
   }
 
   const handleChecklistClicked = (index) => {
-    console.log("CHECKLIST CLICKED", index, "TASK", task);
-
     let sliced = checklistClicked.slice();
     sliced[index] = !sliced[index];
     updateNestedData(sliced);
     setChecklistClicked(sliced);
-
     let val = 0;
     for (let i = 0; i < sliced.length; i++) {
       if (sliced[i] === true) {
@@ -73,8 +58,7 @@ const TaskDetails = ({
       <div class="task">
         <h4>{task?.taskName}</h4>
         <div>
-          <CalendarMonthIcon></CalendarMonthIcon>Due Date: {task.date}{" "}
-          {task.time}
+          <CalendarMonthIcon></CalendarMonthIcon>Due Date: {task.date} {task.time}
         </div>
         <div>
           <ArrowUpwardIcon></ArrowUpwardIcon>Priority: {task.priorityLevel}
@@ -83,10 +67,7 @@ const TaskDetails = ({
           <OpenWithIcon></OpenWithIcon>Complexity: {task.complexityLevel}
         </div>
         <div>Task Complete</div>
-        <LinearProgress
-          value={checklistClickedPercentage}
-          variant="determinate"
-        ></LinearProgress>
+        <LinearProgress value={checklistClickedPercentage} variant="determinate"></LinearProgress>
         <div class="checklistBox">
           Checklist for Subtasks
           {task?.checklist?.map((item, index) => (
@@ -94,14 +75,14 @@ const TaskDetails = ({
               onClick={() => handleChecklistClicked(index)}
               class="checklistTask"
               style={{
-                backgroundColor: checklistClicked[index] ? "#d3ffd3" : "white",
-                cursor: "pointer",
-                padding: "8px",
-                border: "1px solid #ddd",
-                marginBottom: "5px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
+                backgroundColor: checklistClicked[index] ? '#d3ffd3' : 'white',
+                cursor: 'pointer',
+                padding: '8px',
+                border: '1px solid #ddd',
+                marginBottom: '5px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
               }}
             >
               {item}
@@ -112,7 +93,7 @@ const TaskDetails = ({
       </div>
 
       <div class="taskDetailsBtns">
-        <button onClick={() => setTaskDetailsOpen(false)}>
+        <button onClick={() => navigate('/')}>
           <UndoIcon></UndoIcon>
         </button>
         <button>
@@ -121,28 +102,9 @@ const TaskDetails = ({
         <button onClick={() => deleteTask()}>
           <DeleteIcon></DeleteIcon>
         </button>
-        <button onClick={() => setEditTaskModalIsOpen(true)}>
+        <button onClick={() => navigate('/addTask')}>
           <ModeEditIcon></ModeEditIcon>
         </button>
-      </div>
-
-      <div>
-        {editTaskModalIsOpen ? (
-          <AddTaskModal
-            taskDetailsOpen={taskDetailsOpen}
-            setTaskDetailsOpen={setTaskDetailsOpen}
-            taskArr={taskArr}
-            setTaskArr={setTaskArr}
-            task={deepCopyTask}
-            setDeepCopyTask={setDeepCopyTask}
-            setEditTaskModalIsOpen={setEditTaskModalIsOpen}
-            editTaskModalFromDetails={true}
-            unfilteredTaskArr={unfilteredTaskArr}
-            setUnfilteredTaskArr={setUnfilteredTaskArr}
-          ></AddTaskModal>
-        ) : (
-          ""
-        )}
       </div>
     </div>
   );
