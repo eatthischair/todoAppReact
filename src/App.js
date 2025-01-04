@@ -5,7 +5,7 @@ import HomePage from './Pages/HomePage.jsx';
 import TaskDetails from './Pages/TaskDetails.jsx';
 import { Routes, Route } from 'react-router-dom';
 import { useTaskContext } from './context/TaskContext.jsx';
-import { useSaveTasks, useLoadTasks } from './hooks.jsx';
+import { useSaveTasks, useLoadTasks } from './hooks/hooks.jsx';
 
 function App() {
   const { unfilteredTaskArr } = useTaskContext();
