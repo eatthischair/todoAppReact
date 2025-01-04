@@ -40,7 +40,20 @@ const TaskDetails = () => {
   };
 
   const [checklistClicked, setChecklistClicked] = useState(task?.checklistItemsCompletedIndices);
-  const [checklistClickedPercentage, setChecklistClickedPercentage] = useState(0);
+  const [checklistClickedPercentage, setChecklistClickedPercentage] = useState();
+
+  useEffect(() => {
+    setChecklistClickedPercentage(() => {
+      let sliced = checklistClicked.slice();
+      let val = 0;
+      for (let i = 0; i < sliced.length; i++) {
+        if (sliced[i] === true) {
+          val += Math.ceil(100 / sliced.length);
+        }
+      }
+      return val;
+    });
+  }, [checklistClickedPercentage, checklistClicked]);
 
   function updateNestedData(newArr) {
     setTaskArr((prevState) => {
@@ -78,7 +91,7 @@ const TaskDetails = () => {
   return (
     <div class="taskDetails">
       <h4>Task Details</h4>
-      <div class="task">
+      <div class="taskTwo">
         <h4>{task?.taskName}</h4>
         <div>
           <CalendarMonthIcon></CalendarMonthIcon>Due Date: {task.date} {task.time}

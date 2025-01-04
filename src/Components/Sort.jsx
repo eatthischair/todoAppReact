@@ -1,18 +1,9 @@
-import { FormControl, InputLabel, Select, MenuItem } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { InputLabel, Select, MenuItem } from '@mui/material';
+import CustomFormControl from '../utils/CustomFormControl';
 import { useTaskContext } from '../context/TaskContext';
 
 const Sort = () => {
-  const { taskArr, setTaskArr, unfilteredTaskArr, setUnfilteredTaskArr } = useTaskContext();
-
-  const CustomFormControl = styled(FormControl)(({ theme }) => ({
-    '& .MuiOutlinedInput-root': {
-      borderRadius: '20px',
-      '& fieldset': {
-        borderRadius: '20px',
-      },
-    },
-  }));
+  const { setTaskArr } = useTaskContext();
 
   const sortByAscendingDate = () => {
     setTaskArr((prevTaskArr) => {

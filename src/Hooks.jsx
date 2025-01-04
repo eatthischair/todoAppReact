@@ -1,17 +1,22 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
+import { useTaskContext } from './context/TaskContext';
 
-export function useLocalStorage(tasks) {
+export function useLoadTasks() {
+  const { setTaskArr, setUnfilteredTaskArr } = useTaskContext();
+  const hasLoaded = useRef(false);
+
   useEffect(() => {
-    if (tasks && typeof tasks === 'object') localStorage.setItem('tasks', JSON.stringify(tasks));
-    console.log('im inside local storage boss', tasks);
-  }, [tasks]);
+    if (!hasLoaded.current) {
+      const savedTasks = JSON.parse(localStorage.getItem('tasks')) || [];
+      setTaskArr(savedTasks);
+      setUnfilteredTaskArr(savedTasks);
+      hasLoaded.current = true;
+    }
+  }, [setTaskArr, setUnfilteredTaskArr]);
 }
 
-export function useRetrieveLocalStorage() {
-  try {
-    const savedTasks = JSON.parse(localStorage.getItem('tasks'));
-    return savedTasks || [];
-  } catch {
-    return [];
-  }
+export function useSaveTasks(tasks) {
+  useEffect(() => {
+    if (tasks && typeof tasks === 'object') localStorage.setItem('tasks', JSON.stringify(tasks));
+  }, [tasks]);
 }

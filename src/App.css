@@ -149,6 +149,10 @@ body {
 }
 
 .task {
+  display: grid;
+  grid-template-columns: 6fr 1fr; /* First column takes 5/6, second column takes 1/6 */
+  grid-template-rows: repeat(6, auto);
+
   text-align: left;
   border: rgb(190, 190, 211) solid 2px;
   border-radius: 10px;
@@ -193,6 +197,27 @@ body {
 .taskDetailsBtns * {
   margin: auto;
   gap: 20px;
+}
+
+.taskTwo {
+  text-align: left;
+  border: rgb(190, 190, 211) solid 2px;
+  border-radius: 10px;
+  width: 40%;
+  margin: auto;
+  background-color: rgb(255, 255, 255);
+  margin-top: 20px;
+  z-index: 10;
+  padding: 10px;
+  gap: 10px;
+}
+
+.taskTwo > * {
+  margin-bottom: 10px;
+}
+
+.taskTwo > *:last-child {
+  margin-bottom: 0;
 }
 
 .selectorButton {
@@ -243,11 +268,31 @@ body {
 }
 
 .icon {
-  border-radius: 30px;
-  background-color: #c9e8f0;
+  border-radius: 3px;
+  /* background-color: #c9e8f0; */
   padding: 5px;
+  text-align: center;
 }
 
+.iconRight {
+  top: 300px;
+  grid-column: 2;
+  grid-row: 4;
+}
+
+.iconLeft {
+  border-radius: 10px;
+  background-color: #c9e8f0;
+}
+.textBox {
+  position: 'absolute';
+  top: '50%';
+  left: '50%';
+  transform: 'translate(-50%, -50%)';
+  font-size: '16px';
+  font-weight: 'bold';
+  color: '#000';
+}
 .tag {
   background-color: aquamarine;
   width: 10%;
@@ -259,6 +304,23 @@ body {
   display: flex;
   gap: 10px;
   font-size: 12px;
+  grid-column: 1;
+}
+
+.items {
+  grid-column: 1;
+}
+
+.item1 {
+  grid-row: 2;
+}
+
+.item2 {
+  grid-row: 3;
+}
+
+.item3 {
+  grid-row: 4;
 }
 
 .checklistInput {

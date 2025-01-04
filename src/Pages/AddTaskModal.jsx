@@ -9,12 +9,11 @@ import { useTaskContext } from '../context/TaskContext';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 const AddTaskModal = () => {
-  const { taskArr, setTaskArr, setUnfilteredTaskArr, taskToOpen, setTaskToOpen } = useTaskContext();
+  const { taskArr, setTaskArr, setUnfilteredTaskArr, taskToOpen } = useTaskContext();
   const navigate = useNavigate();
 
   let [searchParams] = useSearchParams();
   const [taskIndex, setTaskIndex] = useState(null);
-  const [task, setTask] = useState(taskToOpen);
 
   useEffect(() => {
     let taskIndexValue = -1;
@@ -26,6 +25,7 @@ const AddTaskModal = () => {
     setTaskIndex(taskIndexValue);
   }, [searchParams]);
 
+  const [task, setTask] = useState(taskToOpen);
   const [taskInputVal, setTaskInputVal] = useState(task?.taskName);
   const [priorityLevel, setPriorityLevel] = useState(task?.priorityLevel);
   const [complexityLevel, setComplexityLevel] = useState(task?.complexityLevel);
@@ -52,14 +52,14 @@ const AddTaskModal = () => {
   const saveTask = () => {
     let taskObj = {
       taskName: taskInputVal,
-      date: date || task?.date,
-      time: time || task?.time,
+      date: date,
+      time: time,
       priorityLevel: priorityLevel + 1,
       complexityLevel: complexityLevel + 1,
       powerLevel: (priorityLevel || 0) + (complexityLevel || 0),
-      tags: tags || task?.tags,
+      tags: tags || [],
       checklist: checklist || task?.checklist,
-      done: false || task?.done,
+      done: false,
     };
     taskObj.checklistItemsCompletedIndices = taskObj.checklist
       ? taskObj.checklist.slice().fill(false, 0)

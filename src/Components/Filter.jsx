@@ -1,7 +1,7 @@
-import { FormControl, InputLabel, Select, MenuItem, Checkbox, ListItemText } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { InputLabel, Select, MenuItem, Checkbox, ListItemText } from '@mui/material';
 import { useState, useEffect } from 'react';
 import { useTaskContext } from '../context/TaskContext';
+import CustomFormControl from '../utils/CustomFormControl';
 
 const Filter = ({ filterIsOn, setFilterIsOn }) => {
   const { taskArr, setTaskArr, unfilteredTaskArr } = useTaskContext();
@@ -19,7 +19,7 @@ const Filter = ({ filterIsOn, setFilterIsOn }) => {
         );
       }
     });
-  }, [selectedTags, unfilteredTaskArr]);
+  }, [selectedTags, unfilteredTaskArr, setTaskArr]);
 
   useEffect(() => {
     const findAllTags = () => {
@@ -42,8 +42,9 @@ const Filter = ({ filterIsOn, setFilterIsOn }) => {
   };
 
   const filterTasksByTag = (tag, selectedTags) => {
+    console.log('fitlertasksbytag', tag, selectedTags);
     const filteredTasks = unfilteredTaskArr.filter((task) =>
-      task.tags.some((tag) => selectedTags.includes(tag)),
+      task?.tags?.some((tag) => selectedTags.includes(tag)),
     );
     return filteredTasks;
   };
@@ -54,21 +55,12 @@ const Filter = ({ filterIsOn, setFilterIsOn }) => {
     setSelectedTags(newSelectedTags);
   };
 
-  const CustomFormControl = styled(FormControl)(({ theme }) => ({
-    '& .MuiOutlinedInput-root': {
-      borderRadius: '20px',
-      '& fieldset': {
-        borderRadius: '20px',
-      },
-    },
-  }));
-
   return (
     <CustomFormControl fullWidth>
       <InputLabel id="demo-simple-select-label2">Filter</InputLabel>
       <Select labelId="demo-simple-select-label2" id="demo-simple-select2" multiple value={allTags}>
         {allTags
-          ? allTags.map((tag, index) => {
+          ? allTags.map((tag) => {
               return (
                 <MenuItem>
                   {tag}

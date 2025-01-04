@@ -1,20 +1,10 @@
-const DateandTimeInput = ({
-  date,
-  setDate,
-  time,
-  setTime,
-  datePlaceholder,
-  timePlaceholder,
-}) => {
-  // console.log('date and time', datePlaceholder, timePlaceholder)
+const DateandTimeInput = ({ date, setDate, time, setTime, datePlaceholder, timePlaceholder }) => {
   const handleDate = (e) => {
     setDate(e.target.value);
-    // console.log('date', e.target.value)
   };
 
   const handleTime = (e) => {
     setTime(e.target.value);
-    // console.log('time', e.target.value);
   };
 
   return (

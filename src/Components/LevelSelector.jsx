@@ -8,8 +8,8 @@ const LevelSelector = ({
 }) => {
   return Array.from({ length: 10 }, (element, index) => {
     if (
-      (index + 1 === priorityLevel && forPriority) ||
-      (index + 1 === complexityLevel && forComplexity)
+      (index === priorityLevel - 1 && forPriority) ||
+      (index === complexityLevel - 1 && forComplexity)
     ) {
       return (
         <button class="selectorButton selected" key={index} onClick={() => onClick(index)}>

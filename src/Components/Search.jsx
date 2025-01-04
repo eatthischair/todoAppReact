@@ -1,16 +1,9 @@
-import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
-import { useTaskContext } from "../context/TaskContext";
+import { useTaskContext } from '../context/TaskContext';
 
 const Search = () => {
-  const { taskArr, setTaskArr, unfilteredTaskArr, setUnfilteredTaskArr } =
-    useTaskContext();
+  const { setTaskArr, unfilteredTaskArr } = useTaskContext();
 
   const handleSearch = (input) => {
-    let newTaskArr = taskArr.slice().filter((task) => {
-      return task.taskName.includes(input);
-    });
-    console.log("imput", input, newTaskArr, "AAA", unfilteredTaskArr);
-
     setTaskArr((prevTaskArr) => {
       if (input.length !== 0) {
         let newTaskArr = unfilteredTaskArr.slice().filter((task) => {
@@ -32,7 +25,6 @@ const Search = () => {
         name="fname"
         placeholder="Search..."
       ></input>
-      {/* <button><ArrowRightAltIcon></ArrowRightAltIcon></button> */}
     </div>
   );
 };
