@@ -25,7 +25,7 @@ const PowerMode = () => {
   };
 
   return (
-    <div clasNames="powerMode">
+    <div className="powerMode">
       <button onClick={() => handlePowerMode()}>Power Mode</button>
     </div>
   );

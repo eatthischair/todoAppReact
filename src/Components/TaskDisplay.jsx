@@ -22,13 +22,12 @@ const TaskDisplay = () => {
   const handleTaskDetails = (task, index) => {
     setTaskIndex(index);
     setTaskToOpen(task);
-    navigate(`/taskDetails?${index}`);
-    // navigate(`/taskDetails`);
+    navigate(`/taskDetails`);
   };
 
-  const handleTaskComplete = (task, index) => {
-    const updatedTasks = taskArr.map((item, secondIndex) => {
-      if (index === secondIndex) {
+  const handleTaskComplete = (task, taskIndex) => {
+    const updatedTasks = taskArr.map((item, index) => {
+      if (taskIndex === index) {
         item.done = !item.done;
       }
       return item;
@@ -50,7 +49,6 @@ const TaskDisplay = () => {
         }}
       >
         <h4>{task.taskName}</h4>
-
         <button
           onClick={(e) => {
             handleTaskComplete(task, index);

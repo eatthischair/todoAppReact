@@ -10,32 +10,12 @@ import CheckIcon from '@mui/icons-material/Check';
 import LinearProgress from '@mui/material/LinearProgress';
 
 import { useTaskContext } from '../context/TaskContext';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const TaskDetails = () => {
-  const {
-    taskArr,
-    setTaskArr,
-    unfilteredTaskArr,
-    setUnfilteredTaskArr,
-    taskToOpen,
-    taskIndex,
-    setTaskIndex,
-  } = useTaskContext();
+  const { taskArr, setTaskArr, unfilteredTaskArr, setUnfilteredTaskArr, taskToOpen, taskIndex } =
+    useTaskContext();
   const navigate = useNavigate();
-
-  const [searchParams] = useSearchParams();
-  // const [taskIndex, setTaskIndex] = useState(null);
-
-  useEffect(() => {
-    // setTaskIndex(() => {
-    //   //index of task in taskArr passed via search params
-    //   for (const [key] of searchParams.entries()) {
-    //     return key;
-    //   }
-    // });
-    console.log('task index in useEffect', taskIndex);
-  }, [setTaskIndex, searchParams]);
 
   //to avoid renaming everything and causing bugs lmao
   const [task, setTask] = useState(taskToOpen);

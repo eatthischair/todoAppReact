@@ -3,7 +3,9 @@ import React, { createContext, useState, useContext, useRef, useEffect } from 'r
 const TaskContext = createContext();
 
 export function TaskProvider({ children }) {
+  //tasks that are displayed
   const [taskArr, setTaskArr] = useState([]);
+  //full Arr of tasks
   const [unfilteredTaskArr, setUnfilteredTaskArr] = useState([]);
   const [taskToOpen, setTaskToOpen] = useState({});
   const [taskIndex, setTaskIndex] = useState(false);

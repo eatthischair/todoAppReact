@@ -59,9 +59,9 @@ const Filter = ({ filterIsOn, setFilterIsOn }) => {
       <InputLabel id="demo-simple-select-label2">Filter</InputLabel>
       <Select labelId="demo-simple-select-label2" id="demo-simple-select2" multiple value={allTags}>
         {allTags
-          ? allTags.map((tag) => {
+          ? allTags.map((tag, index) => {
               return (
-                <MenuItem>
+                <MenuItem key={index}>
                   {tag}
                   <Checkbox
                     onClick={() => handleTagOnClick(tag)}

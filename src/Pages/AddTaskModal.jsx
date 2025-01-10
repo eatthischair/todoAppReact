@@ -16,9 +16,10 @@ const AddTaskModal = () => {
   const [taskIndex, setTaskIndex] = useState(null);
 
   useEffect(() => {
-    //index to splice in edited task.
+    //index to splice in edited task
     let taskIndexValue = -1;
     for (const [key] of searchParams.entries()) {
+      //navFromHome i.e. creating new task
       if (key !== 'navFromHome') {
         taskIndexValue = key;
       }

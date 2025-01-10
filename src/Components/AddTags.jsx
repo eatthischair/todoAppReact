@@ -8,7 +8,7 @@ const AddTags = ({ tags, setTags }) => {
       //placeholder passed in if editing task
       setInputValue(tags);
     }
-  }, [tags]);
+  }, []);
 
   const makeTags = (e) => {
     setInputValue(e);
