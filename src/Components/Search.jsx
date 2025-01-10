@@ -6,25 +6,25 @@ const Search = () => {
   const handleSearch = (input) => {
     setTaskArr((prevTaskArr) => {
       if (input.length !== 0) {
-        let newTaskArr = unfilteredTaskArr.slice().filter((task) => {
+        const newTaskArr = unfilteredTaskArr.slice().filter((task) => {
           return task.taskName.includes(input);
         });
         return newTaskArr;
       } else {
-        return unfilteredTaskArr; // This part is correct
+        return unfilteredTaskArr;
       }
     });
   };
 
   return (
-    <div class="searchbar">
+    <div className="searchbar">
       <input
         onChange={(e) => handleSearch(e.target.value)}
         type="text"
         id="fname"
         name="fname"
         placeholder="Search..."
-      ></input>
+      />
     </div>
   );
 };

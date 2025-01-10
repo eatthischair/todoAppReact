@@ -12,10 +12,11 @@ const AddTaskModal = () => {
   const { taskArr, setTaskArr, setUnfilteredTaskArr, taskToOpen } = useTaskContext();
   const navigate = useNavigate();
 
-  let [searchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const [taskIndex, setTaskIndex] = useState(null);
 
   useEffect(() => {
+    //index to splice in edited task.
     let taskIndexValue = -1;
     for (const [key] of searchParams.entries()) {
       if (key !== 'navFromHome') {
@@ -44,28 +45,29 @@ const AddTaskModal = () => {
   const updateComplexityLevel = (num) => {
     setComplexityLevel(num);
   };
-
   const goBack = () => {
     navigate('/');
   };
 
   const saveTask = () => {
-    let taskObj = {
+    const taskObj = {
       taskName: taskInputVal,
       date: date,
       time: time,
-      priorityLevel: priorityLevel + 1,
-      complexityLevel: complexityLevel + 1,
+      priorityLevel: priorityLevel,
+      complexityLevel: complexityLevel,
       powerLevel: (priorityLevel || 0) + (complexityLevel || 0),
       tags: tags || [],
       checklist: checklist || task?.checklist,
       done: false,
     };
+    //array of booleans to track completion of subtasks
     taskObj.checklistItemsCompletedIndices = taskObj.checklist
       ? taskObj.checklist.slice().fill(false, 0)
       : [];
 
-    let newTaskArr = taskArr?.slice();
+    //if editing task, replace old v. with new version
+    const newTaskArr = taskArr?.slice();
     if (taskIndex !== -1) newTaskArr.splice(taskIndex, 1);
 
     setUnfilteredTaskArr([...newTaskArr, taskObj]);
@@ -74,8 +76,8 @@ const AddTaskModal = () => {
   };
 
   return (
-    <div class="taskModal">
-      <div class="taskForm">
+    <div className="taskModal">
+      <div className="taskForm">
         <h1>Add New Task</h1>
         <h2>Task Name</h2>
         <input
@@ -83,24 +85,20 @@ const AddTaskModal = () => {
           type="text"
           placeholder="Name of task..."
           value={taskInputVal}
-        ></input>
+        />
         <div>Level of Priority</div>
 
-        <div class="levelContainer">
-          <LevelSelector
-            onClick={updatePriorityLevel}
-            priorityLevel={priorityLevel}
-            forPriority
-          ></LevelSelector>
+        <div className="levelContainer">
+          <LevelSelector onClick={updatePriorityLevel} priorityLevel={priorityLevel} forPriority />
         </div>
 
         <div>Level of Complexity</div>
-        <div class="levelContainer">
+        <div className="levelContainer">
           <LevelSelector
             onClick={updateComplexityLevel}
             complexityLevel={complexityLevel}
             forComplexity
-          ></LevelSelector>
+          />
         </div>
 
         <DateandTimeInput
@@ -110,7 +108,7 @@ const AddTaskModal = () => {
           setTime={setTime}
           datePlaceholder={date}
           timePlaceholder={time}
-        ></DateandTimeInput>
+        />
 
         <AddChecklist
           checklist={checklist}
@@ -118,16 +116,16 @@ const AddTaskModal = () => {
           currentItem={currentItem}
           setCurrentItem={setCurrentItem}
           checklistPlaceholder={checklist}
-        ></AddChecklist>
+        />
 
-        <AddTags tags={tags} setTags={setTags} tagsPlaceholder={tags}></AddTags>
+        <AddTags tags={tags} setTags={setTags} />
 
-        <div class="buttonRow"></div>
-        <button class="buttonRowbtn" onClick={() => saveTask()}>
+        <div className="buttonRow" />
+        <button className="buttonRowbtn" onClick={() => saveTask()}>
           Save Task
         </button>
         <button onClick={() => goBack()}>
-          <UndoIcon></UndoIcon>
+          <UndoIcon />
         </button>
       </div>
     </div>

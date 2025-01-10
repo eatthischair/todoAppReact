@@ -1,18 +1,19 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-const AddTags = ({ tags, setTags, tagsPlaceholder }) => {
-  const [inputValue, setInputValue] = useState(""); // Holds the current value of the input
+const AddTags = ({ tags, setTags }) => {
+  const [inputValue, setInputValue] = useState('');
 
   useEffect(() => {
-    if (tagsPlaceholder) {
-      setInputValue(tagsPlaceholder);
+    if (tags) {
+      //placeholder passed in if editing task
+      setInputValue(tags);
     }
-  }, []);
+  }, [tags]);
 
   const makeTags = (e) => {
     setInputValue(e);
-    let tagsArr = e.split(",");
-    let trimmedArray = tagsArr.map((str) => str.trim()).filter((str) => str);
+    const tagsArr = e.split(',');
+    const trimmedArray = tagsArr.map((str) => str.trim()).filter((str) => str);
     setTags(trimmedArray);
   };
 
@@ -24,7 +25,7 @@ const AddTags = ({ tags, setTags, tagsPlaceholder }) => {
         type="text"
         placeholder="Tag1, Tag2, Tag3,..."
         value={inputValue}
-      ></input>
+      />
     </div>
   );
 };

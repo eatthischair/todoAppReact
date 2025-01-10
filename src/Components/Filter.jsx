@@ -1,7 +1,7 @@
 import { InputLabel, Select, MenuItem, Checkbox, ListItemText } from '@mui/material';
 import { useState, useEffect } from 'react';
 import { useTaskContext } from '../context/TaskContext';
-import CustomFormControl from '../utils/CustomFormControl';
+import { CustomFormControl } from '../utils/CustomFormControl';
 
 const Filter = ({ filterIsOn, setFilterIsOn }) => {
   const { taskArr, setTaskArr, unfilteredTaskArr } = useTaskContext();
@@ -23,7 +23,7 @@ const Filter = ({ filterIsOn, setFilterIsOn }) => {
 
   useEffect(() => {
     const findAllTags = () => {
-      let tagsArr = [];
+      const tagsArr = [];
       unfilteredTaskArr.forEach((task) => {
         tagsArr.push(task.tags);
       });
@@ -31,7 +31,7 @@ const Filter = ({ filterIsOn, setFilterIsOn }) => {
       return tagsArr.flat();
     };
     setAllTags(findAllTags());
-  }, [taskArr]);
+  }, [taskArr, unfilteredTaskArr]);
 
   const addOrRemoveTagFromSelected = (tag) => {
     if (selectedTags.includes(tag)) {
@@ -42,7 +42,6 @@ const Filter = ({ filterIsOn, setFilterIsOn }) => {
   };
 
   const filterTasksByTag = (tag, selectedTags) => {
-    console.log('fitlertasksbytag', tag, selectedTags);
     const filteredTasks = unfilteredTaskArr.filter((task) =>
       task?.tags?.some((tag) => selectedTags.includes(tag)),
     );
@@ -50,7 +49,7 @@ const Filter = ({ filterIsOn, setFilterIsOn }) => {
   };
 
   const handleTagOnClick = (tag) => {
-    let newSelectedTags = addOrRemoveTagFromSelected(tag);
+    const newSelectedTags = addOrRemoveTagFromSelected(tag);
     filterTasksByTag(tag, newSelectedTags);
     setSelectedTags(newSelectedTags);
   };
@@ -67,8 +66,8 @@ const Filter = ({ filterIsOn, setFilterIsOn }) => {
                   <Checkbox
                     onClick={() => handleTagOnClick(tag)}
                     checked={selectedTags.includes(tag)}
-                  ></Checkbox>
-                  <ListItemText></ListItemText>
+                  />
+                  <ListItemText />
                 </MenuItem>
               );
             })

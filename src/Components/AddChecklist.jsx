@@ -1,5 +1,3 @@
-import { useCallback } from 'react';
-
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 
@@ -10,14 +8,13 @@ const AddChecklist = ({
   setCurrentItem,
   checklistPlaceholder,
 }) => {
-  const handleInputChange = useCallback((e) => {
-    const updateItem = (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      setCurrentItem(e.target.value);
-    };
-    updateItem(e);
-  }, []);
+  //e.preventDefault() & e.stopPropagation() necessary or + button closes the form
+
+  const handleInputChange = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setCurrentItem(e.target.value);
+  };
 
   const updateChecklist = (e) => {
     e.preventDefault();
@@ -47,9 +44,9 @@ const AddChecklist = ({
           type="text"
           placeholder="Add Item..."
           value={currentItem}
-        ></input>
+        />
         <button onClick={(e) => updateChecklist(e)}>
-          <AddIcon></AddIcon>
+          <AddIcon />
         </button>
       </div>
 
@@ -59,7 +56,7 @@ const AddChecklist = ({
             <div key={index}>
               {item}
               <button onClick={(e) => deleteItem(e, item)}>
-                <DeleteIcon></DeleteIcon>
+                <DeleteIcon />
               </button>
             </div>
           );

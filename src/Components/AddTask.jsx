@@ -6,12 +6,13 @@ const AddTask = () => {
   const { setTaskToOpen } = useTaskContext();
 
   const resetFormThenNav = () => {
+    //val not null if editing task, null if creating new task
     setTaskToOpen(null);
     navigate('/addTask?navFromHome');
   };
 
   return (
-    <div class="addTask">
+    <div className="addTask">
       <button onClick={() => resetFormThenNav()}>+ Add Task</button>
     </div>
   );

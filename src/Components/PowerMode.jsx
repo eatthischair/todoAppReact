@@ -1,10 +1,8 @@
 import { useState } from 'react';
-
 import { useTaskContext } from '../context/TaskContext';
 
 const PowerMode = () => {
-  const { taskArr, setTaskArr, unfilteredTaskArr, setUnfilteredTaskArr } = useTaskContext();
-
+  const { setTaskArr, unfilteredTaskArr } = useTaskContext();
   const [powerModeOn, setPowerModeOn] = useState(false);
 
   const handlePowerMode = () => {
@@ -19,7 +17,6 @@ const PowerMode = () => {
 
     setTaskArr((prevTaskArr) => {
       if (!powerModeOn) {
-        // console.log('power mode', powerModeOn, powerModeTaskArr)
         return powerModeTaskArr;
       } else {
         return unfilteredTaskArr;
@@ -28,7 +25,7 @@ const PowerMode = () => {
   };
 
   return (
-    <div class="powerMode">
+    <div clasNames="powerMode">
       <button onClick={() => handlePowerMode()}>Power Mode</button>
     </div>
   );

@@ -1,5 +1,5 @@
 import { InputLabel, Select, MenuItem } from '@mui/material';
-import CustomFormControl from '../utils/CustomFormControl';
+import { CustomFormControl } from '../utils/CustomFormControl';
 import { useTaskContext } from '../context/TaskContext';
 
 const Sort = () => {
@@ -64,7 +64,7 @@ const Sort = () => {
   };
 
   return (
-    <div class="sort">
+    <div className="sort">
       <CustomFormControl fullWidth>
         <InputLabel id="demo-simple-select-label">Sort</InputLabel>
         <Select labelId="demo-simple-select-label" id="demo-simple-select">

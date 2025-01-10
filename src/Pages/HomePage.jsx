@@ -8,14 +8,14 @@ import AddTask from '../Components/AddTask.jsx';
 const HomePage = () => {
   return (
     <div>
-      <Search></Search>
+      <Search />
       <div className="btns">
-        <Sort></Sort>
-        <Filter></Filter>
+        <Sort />
+        <Filter />
       </div>
-      <PowerMode></PowerMode>
-      <TaskDisplay></TaskDisplay>
-      <AddTask></AddTask>
+      <PowerMode />
+      <TaskDisplay />
+      <AddTask />
     </div>
   );
 };

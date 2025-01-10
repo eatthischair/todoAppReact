@@ -13,27 +13,35 @@ import { useTaskContext } from '../context/TaskContext';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 const TaskDetails = () => {
-  const { taskArr, setTaskArr, unfilteredTaskArr, setUnfilteredTaskArr, taskToOpen } =
-    useTaskContext();
+  const {
+    taskArr,
+    setTaskArr,
+    unfilteredTaskArr,
+    setUnfilteredTaskArr,
+    taskToOpen,
+    taskIndex,
+    setTaskIndex,
+  } = useTaskContext();
   const navigate = useNavigate();
 
-  let [searchParams] = useSearchParams();
-
-  const [taskIndex, setTaskIndex] = useState(null);
+  const [searchParams] = useSearchParams();
+  // const [taskIndex, setTaskIndex] = useState(null);
 
   useEffect(() => {
-    setTaskIndex(() => {
-      for (const [key] of searchParams.entries()) {
-        return key;
-      }
-    });
+    // setTaskIndex(() => {
+    //   //index of task in taskArr passed via search params
+    //   for (const [key] of searchParams.entries()) {
+    //     return key;
+    //   }
+    // });
+    console.log('task index in useEffect', taskIndex);
   }, [setTaskIndex, searchParams]);
 
   //to avoid renaming everything and causing bugs lmao
   const [task, setTask] = useState(taskToOpen);
 
   const deleteTask = () => {
-    let filteredArr = [...taskArr].filter((item) => item !== task);
+    const filteredArr = [...taskArr].filter((item) => item !== task);
     setTaskArr(filteredArr);
     setUnfilteredTaskArr([...unfilteredTaskArr].filter((item) => item !== task));
     navigate('/');
@@ -44,29 +52,22 @@ const TaskDetails = () => {
 
   useEffect(() => {
     setChecklistClickedPercentage(() => {
-      let sliced = checklistClicked.slice();
-      let val = 0;
-      for (let i = 0; i < sliced.length; i++) {
-        if (sliced[i] === true) {
-          val += Math.ceil(100 / sliced.length);
-        }
-      }
-      return val;
+      const percentage = checklistClicked?.reduce((acc, current) => {
+        return acc + (current === true ? Math.ceil(100 / checklistClicked.length) : 0);
+      }, 0);
+      return percentage;
     });
   }, [checklistClickedPercentage, checklistClicked]);
 
   function updateNestedData(newArr) {
-    setTaskArr((prevState) => {
-      const newState = prevState.map((item, index) => {
-        if (index === taskIndex * 1) {
-          return { ...item, checklistItemsCompletedIndices: newArr };
-        } else {
-          return item;
-        }
-      });
-      return newState;
-    });
-
+    //taskIndex = location of task in taskArr
+    //find task, replace old boolean array w/ new array from handleChecklistClicked
+    //to not mutate state
+    setTaskArr((prevState) =>
+      prevState.map((item, index) =>
+        index === taskIndex * 1 ? { ...item, checklistItemsCompletedIndices: newArr } : item,
+      ),
+    );
     setUnfilteredTaskArr((prevState) =>
       prevState.map((item, index) =>
         index === taskIndex * 1 ? { ...item, checklistItemsCompletedIndices: newArr } : item,
@@ -75,45 +76,42 @@ const TaskDetails = () => {
   }
 
   const handleChecklistClicked = (index) => {
-    let sliced = checklistClicked.slice();
+    //slice to not mutate state
+    const sliced = checklistClicked.slice();
     sliced[index] = !sliced[index];
-    let val = 0;
-    for (let i = 0; i < sliced.length; i++) {
-      if (sliced[i] === true) {
-        val += Math.ceil(100 / sliced.length);
-      }
-    }
     updateNestedData(sliced);
     setChecklistClicked(sliced);
-    setChecklistClickedPercentage(val);
   };
 
   return (
-    <div class="taskDetails">
+    <div className="taskDetails">
       <h4>Task Details</h4>
-      <div class="taskTwo">
+      <div className="taskTwo">
         <h4>{task?.taskName}</h4>
         <div>
-          <CalendarMonthIcon></CalendarMonthIcon>Due Date: {task.date} {task.time}
+          <CalendarMonthIcon />
+          Due Date: {task.date} {task.time}
         </div>
         <div>
-          <ArrowUpwardIcon></ArrowUpwardIcon>Priority: {task.priorityLevel}
+          <ArrowUpwardIcon />
+          Priority: {task.priorityLevel}
         </div>
         <div>
-          <OpenWithIcon></OpenWithIcon>Complexity: {task.complexityLevel}
+          <OpenWithIcon />
+          Complexity: {task.complexityLevel}
         </div>
         <div>Task Complete</div>
-        <LinearProgress value={checklistClickedPercentage} variant="determinate"></LinearProgress>
-        <div class="checklistBox">
+        <LinearProgress value={checklistClickedPercentage} variant="determinate" />
+        <div className="checklistBox">
           Checklist for Subtasks
           {task?.checklist?.map((item, index) => (
             <div
               key={index}
               onClick={() => handleChecklistClicked(index)}
-              class="checklistTask"
+              className="checklistTask"
+              //looks ugly but dynamically changing classNames was not working
               style={{
                 backgroundColor: checklistClicked[index] ? '#d3ffd3' : 'white',
-                cursor: 'pointer',
                 padding: '8px',
                 border: '1px solid #ddd',
                 marginBottom: '5px',
@@ -123,7 +121,7 @@ const TaskDetails = () => {
               }}
             >
               {item}
-              <CheckIcon></CheckIcon>
+              <CheckIcon />
             </div>
           ))}
         </div>
@@ -131,16 +129,16 @@ const TaskDetails = () => {
 
       <div class="taskDetailsBtns">
         <button onClick={() => navigate(`/`)}>
-          <UndoIcon></UndoIcon>
+          <UndoIcon />
         </button>
         <button>
-          <RepeatIcon></RepeatIcon>
+          <RepeatIcon />
         </button>
         <button onClick={() => deleteTask()}>
-          <DeleteIcon></DeleteIcon>
+          <DeleteIcon />
         </button>
         <button onClick={() => navigate(`/addTask?${taskIndex}`)}>
-          <ModeEditIcon></ModeEditIcon>
+          <ModeEditIcon />
         </button>
       </div>
     </div>
